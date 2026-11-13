@@ -16,7 +16,7 @@
 // Lexical truth has one owner. Equivalence consumes the admission service's
 // structured result instead of carrying a second RFC 8141 parser whose rules
 // could drift independently.
-import { admitUniformResourceName } from "@red-cup-engineering/urn-services-section/urn-admission-service";
+import { admitUniformResourceName } from "@red-cup-engineering/urn-engineering-services-section/urn-admission-service";
 
 function normalizePercentEncodingCase(nss) {
   let result = "";

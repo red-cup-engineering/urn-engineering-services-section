@@ -22,7 +22,7 @@
 // This service refuses that case rather than emit a string that would not
 // round-trip through admitUniformResourceName.
 
-import { admitUniformResourceName } from "@red-cup-engineering/urn-services-section/urn-admission-service";
+import { admitUniformResourceName } from "@red-cup-engineering/urn-engineering-services-section/urn-admission-service";
 
 function invalidPart(rule, value, allowEmpty = false) {
   return typeof value !== "string" || (!allowEmpty && value.length === 0)
