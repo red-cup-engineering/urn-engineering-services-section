@@ -22,7 +22,7 @@
 // This service refuses that case rather than emit a string that would not
 // round-trip through admitUniformResourceName.
 
-import { validateUniformResourceName } from "@red-cup-engineering/urn-engineering-services-section/urn-admission-service";
+import { admitUniformResourceName } from "@red-cup-engineering/urn-engineering-services-section/urn-admission-service";
 
 function invalidPart(rule, value, allowEmpty = false) {
   return typeof value !== "string" || (!allowEmpty && value.length === 0)
@@ -73,8 +73,8 @@ export function renderUniformResourceName(parts) {
   // The admission service owns the ABNF. Re-admission also proves that the
   // constructed surface parses back to the same component tuple, rather than
   // allowing data to be reinterpreted as a delimiter.
-  const validated = validateUniformResourceName(rendered);
-  if (!validated.ok) return { ok: false, rule: validated.rule, message: validated.message };
+  const admitted = admitUniformResourceName(rendered);
+  if (!admitted.ok) return { ok: false, rule: admitted.rule, message: admitted.message };
 
   const expected = {
     nid,
@@ -84,7 +84,7 @@ export function renderUniformResourceName(parts) {
     fComponent: fComponent ?? null,
   };
   for (const [field, rule] of [["nid", "NID"], ["nss", "NSS"], ["rComponent", "r-component"], ["qComponent", "q-component"], ["fComponent", "f-component"]]) {
-    if (validated[field] !== expected[field]) {
+    if (admitted[field] !== expected[field]) {
       return { ok: false, rule, message: `${field} cannot be rendered without changing its RFC 8141 component boundaries` };
     }
   }

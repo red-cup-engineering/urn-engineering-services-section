@@ -59,7 +59,7 @@ function consumeRun(input, start, charClass, stopSequences = []) {
  * @param {string} surface
  * @returns {{ok: true, nid: string, nss: string, rComponent: string|null, qComponent: string|null, fComponent: string|null} | {ok: false, rule: string, position: number, message: string}}
  */
-export function validateUniformResourceName(surface) {
+export function admitUniformResourceName(surface) {
   if (typeof surface !== "string") {
     return { ok: false, rule: "namestring", position: 0, message: "surface must be a string" };
   }

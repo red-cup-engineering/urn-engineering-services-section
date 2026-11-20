@@ -16,7 +16,7 @@
 // Lexical truth has one owner. Equivalence consumes the admission service's
 // structured result instead of carrying a second RFC 8141 parser whose rules
 // could drift independently.
-import { validateUniformResourceName } from "@red-cup-engineering/urn-engineering-services-section/urn-admission-service";
+import { admitUniformResourceName } from "@red-cup-engineering/urn-engineering-services-section/urn-admission-service";
 
 function normalizePercentEncodingCase(nss) {
   let result = "";
@@ -39,13 +39,13 @@ function normalizePercentEncodingCase(nss) {
  * @returns {{ok: true, equivalent: boolean} | {ok: false, side: "left"|"right", rule: string, message: string}}
  */
 export function areUniformResourceNamesEquivalent(left, right) {
-  const leftValidation = validateUniformResourceName(left);
-  if (!leftValidation.ok) return { ok: false, side: "left", rule: leftValidation.rule, message: leftValidation.message };
-  const rightValidation = validateUniformResourceName(right);
-  if (!rightValidation.ok) return { ok: false, side: "right", rule: rightValidation.rule, message: rightValidation.message };
+  const leftAdmission = admitUniformResourceName(left);
+  if (!leftAdmission.ok) return { ok: false, side: "left", rule: leftAdmission.rule, message: leftAdmission.message };
+  const rightAdmission = admitUniformResourceName(right);
+  if (!rightAdmission.ok) return { ok: false, side: "right", rule: rightAdmission.rule, message: rightAdmission.message };
 
-  const nidEquivalent = leftValidation.nid.toLowerCase() === rightValidation.nid.toLowerCase();
-  const nssEquivalent = normalizePercentEncodingCase(leftValidation.nss) === normalizePercentEncodingCase(rightValidation.nss);
+  const nidEquivalent = leftAdmission.nid.toLowerCase() === rightAdmission.nid.toLowerCase();
+  const nssEquivalent = normalizePercentEncodingCase(leftAdmission.nss) === normalizePercentEncodingCase(rightAdmission.nss);
 
   return { ok: true, equivalent: nidEquivalent && nssEquivalent };
 }
